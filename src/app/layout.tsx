@@ -4,6 +4,7 @@ import { Providers } from "@/components/Providers";
 import { Header } from "@/components/nav/Header";
 import { Footer } from "@/components/nav/Footer";
 import { SearchPalette } from "@/components/nav/SearchPalette";
+import { SITE_URL } from "@/lib/site";
 import "./globals.css";
 
 const geist = Geist({ variable: "--font-geist", subsets: ["latin"] });
@@ -11,6 +12,7 @@ const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"]
 const serif = Instrument_Serif({ variable: "--font-serif", subsets: ["latin"], weight: "400", style: ["normal", "italic"] });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
   title: { default: "PokéDeck — Pokédex colecionável & Team Builder", template: "%s · PokéDeck" },
   description:
     "Explore todos os Pokémon com artes oficiais, fichas completas, cadeias evolutivas e monte decks de seis com análise de tipos.",

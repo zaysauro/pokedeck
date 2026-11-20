@@ -24,7 +24,15 @@ seis Pokémon apresentados em leque, com análise de equilíbrio de tipos.
   duplicar, excluir, exportar/importar JSON e compartilhar por link.
 - **Análise do deck:** matriz defensiva, fraquezas compartilhadas, resistências e imunidades, cobertura ofensiva por
   STAB, distribuição de tipos, média de atributos e sugestões de tipos. Não é uma simulação de batalha.
-- **Favoritos:** coleção pessoal com filtro por tipo e envio direto para um deck.
+- **Cartas TCG** (`/cards`): cartas reais do Pokémon Estampas Ilustradas em português (TCGdex). Inclui cartas
+  populares em leque, vitrine de raridades especiais, expansões recentes e pesquisa completa. Os filtros podem ser
+  combinados: nome, série, coleção, categoria, raridade, tipo, ilustrador, HP e estágio. Ordenação por mais
+  recentes, mais antigas, A–Z, maior e menor HP. Visualização rápida em modal e página própria por carta
+  (`/cards/[id]`) com scan em alta resolução, ataques, custos de energia, habilidades, fraqueza, resistência, recuo
+  e ilustrador. Página por coleção (`/cards/sets/[id]`) com porcentagem de conclusão.
+- **Coleção de cartas:** favoritar, marcar “tenho” (com cópias repetidas) e “quero” (lista de desejos). Tudo salvo
+  localmente, pronto para a futura área “Minha Coleção”.
+- **Favoritos:** coleção pessoal com filtro por tipo e envio direto para um deck, além das cartas TCG salvas.
 - **Comparar:** até 4 Pokémon com radar sobreposto, barras por atributo, total e comparação de tipos.
 - **Busca global:** paleta ⌘K / `/` em qualquer página e página `/search`.
 - **Extras:** modo Shiny global, sprites animados (Showdown), respeito a `prefers-reduced-motion`, navegação mobile
@@ -62,6 +70,14 @@ vem de **uma única consulta GraphQL** à PokéAPI, servida por `/api/pokedex` c
 diária. Novas espécies aparecem sem novo deploy. No navegador, o índice fica em memória e no IndexedDB, então a
 Pokédex abre instantaneamente nas visitas seguintes. As fichas usam a API REST no servidor, com cache de 24 h (ISR).
 Se a consulta GraphQL falhar, há um modo reduzido via REST.
+
+**Cartas TCG.** Fonte: [TCGdex](https://tcgdex.dev) no idioma `pt`, que contém as cartas físicas lançadas no
+Brasil (`pt-br` na TCGdex traz apenas o TCG Pocket, um jogo digital, que fica fora do catálogo). Os filtros que a
+TCGdex suporta são enviados direto para a API (`services/tcgdex.ts`). Série, ordem de lançamento, ordem alfabética,
+“somente com imagem” e paginação são aplicados no servidor do PokéDeck, porque a API não oferece datas por carta
+nem filtros OU confiáveis. Respostas ficam no cache de dados do Next (6–24 h), requisições iguais simultâneas são
+deduplicadas e o cliente mantém um cache por sessão. As imagens são WebP servidas direto da CDN da TCGdex, em baixa
+resolução na grade e alta no detalhe.
 
 **Imagens.** URLs do repositório [PokeAPI/sprites](https://github.com/PokeAPI/sprites), com fallback automático:
 preferida → Official Artwork → Pokémon HOME → sprite clássico → placeholder. Usamos `<img>` com lazy loading,
