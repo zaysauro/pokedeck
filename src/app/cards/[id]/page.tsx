@@ -9,6 +9,7 @@ import { CardArt } from "@/components/tcg/CardArt";
 import { CardInfo } from "@/components/tcg/CardInfo";
 import { CollectorActions } from "@/components/tcg/CollectorActions";
 import { RelatedCards } from "@/components/tcg/RelatedCards";
+import { OnlineCollectorActions } from "@/components/social/OnlineCollectorActions";
 
 export const revalidate = 86400;
 
@@ -70,7 +71,8 @@ export default async function CardPage({ params }: Params) {
                 </Link>
               )}
             </div>
-            <p className="mt-4 text-[11px] text-white/30">Coleção pessoal salva neste navegador. Dados: TCGdex.</p>
+            <p className="mt-4 text-[11px] text-white/30">Favoritas/Tenho/Quero acima ficam salvas neste navegador. Dados: TCGdex.</p>
+            <OnlineCollectorActions card={card} />
           </div>
         </div>
       </div>

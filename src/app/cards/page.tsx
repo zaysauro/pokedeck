@@ -4,6 +4,7 @@ import { parseTcgFilters } from "@/lib/tcg/query";
 import { getCardsByIds, getMeta, getRecentSets, searchCards } from "@/services/tcgdex";
 import { TcgExplorer } from "@/components/tcg/TcgExplorer";
 import { RecentSets, SpecialCards, TcgHero } from "@/components/tcg/TcgLanding";
+import { AdSlot } from "@/components/social/AdSlot";
 
 type SP = Promise<Record<string, string | string[] | undefined>>;
 
@@ -52,6 +53,7 @@ export default async function CardsPage({ searchParams }: { searchParams: SP }) 
       <TcgHero popular={popular ?? []} totalCards={all?.total ?? null} />
       <SpecialCards initial={specials} />
       <RecentSets sets={recent ?? []} />
+      <div className="mx-auto max-w-[1440px] px-4 md:px-6"><AdSlot placement="catalog" /></div>
       <section id="explorar" className="mx-auto max-w-[1440px] scroll-mt-20 px-4 pb-10 md:px-6">
         <p className="eyebrow">Pesquisa completa</p>
         <h2 className="display mb-8 mt-3 text-[48px] md:text-[80px]">
