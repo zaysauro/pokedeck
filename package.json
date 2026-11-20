@@ -9,23 +9,24 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@neon/auth": "^0.8.2",
+    "@neondatabase/serverless": "^1.2.1",
     "@tanstack/react-virtual": "^3.13.12",
     "idb-keyval": "^6.2.2",
     "lucide-react": "^0.544.0",
     "motion": "^12.23.12",
-    "next": "^15.5.29",
-    "react": "19.1.0",
-    "react-dom": "19.1.0",
+    "next": "^16.4.6",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
     "server-only": "^0.0.1"
   },
   "devDependencies": {
-    "@eslint/eslintrc": "^3",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
-    "@types/react": "^19",
-    "@types/react-dom": "^19",
+    "@types/react": "^19.2.7",
+    "@types/react-dom": "^19.2.3",
     "eslint": "^9",
-    "eslint-config-next": "^15.5.29",
+    "eslint-config-next": "^16.4.6",
     "tailwindcss": "^4",
     "typescript": "^5"
   }
