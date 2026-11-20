@@ -16,6 +16,8 @@ interface Props {
   onEmptyClick?: () => void;
   size?: "sm" | "md" | "lg";
   interactive?: boolean;
+  /** optional custom face (e.g. a real TCG card); defaults to the Pokédex collectible card */
+  renderCard?: (member: CardData & { key: string }, index: number, select: () => void) => React.ReactNode;
   className?: string;
 }
 
@@ -24,7 +26,7 @@ interface Props {
  * with 3D lift on hover, neighbour push-away, and a selected card that rises to the front.
  */
 export function FanDeck({
-  members, selected = null, onSelect, slots = 0, onEmptyClick, size = "lg", interactive = true, className = "",
+  members, selected = null, onSelect, slots = 0, onEmptyClick, size = "lg", interactive = true, className = "", renderCard,
 }: Props) {
   const ref = useRef<HTMLDivElement>(null);
   const [width, setWidth] = useState(0);
@@ -97,12 +99,16 @@ export function FanDeck({
               onHoverEnd={() => interactive && setHover((h) => (h === i ? null : h))}
             >
               <div style={{ boxShadow: "0 30px 60px -20px rgba(0,0,0,.7)" }} className="rounded-[var(--radius-card)]">
-                <PokeCard
-                  data={m}
-                  size={cardW >= 160 ? "md" : "sm"}
-                  showFavorite={false}
-                  onClick={interactive && onSelect ? () => onSelect(selected === i ? null : i) : undefined}
-                />
+                {renderCard ? (
+                  renderCard(m, i, () => onSelect?.(selected === i ? null : i))
+                ) : (
+                  <PokeCard
+                    data={m}
+                    size={cardW >= 160 ? "md" : "sm"}
+                    showFavorite={false}
+                    onClick={interactive && onSelect ? () => onSelect(selected === i ? null : i) : undefined}
+                  />
+                )}
               </div>
             </motion.div>
           );
