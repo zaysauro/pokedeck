@@ -1,8 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
-import Image from "next/image";
-import { ArrowLeft, ArrowRight, BookOpen, Search, X, Sparkles, Layers3 } from "lucide-react";
+import { ArrowLeft, ArrowRight, BookOpen, Search, X, Layers3 } from "lucide-react";
 import { Container, PageHeader } from "@/components/ui/PageHeader";
 
 type CardBrief = { id: string; localId: string; name: string; image?: string; category?: string; rarity?: string; set?: { id: string; name: string } };
