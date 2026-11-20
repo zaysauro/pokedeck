@@ -1,45 +1,46 @@
 import { NextRequest, NextResponse } from "next/server";
+import { parseTcgFilters } from "@/lib/tcg/query";
+import { getCard, getCardsByIds, getMeta, searchCards } from "@/services/tcgdex";
 
-const API = "https://api.tcgdex.net/v2/pt-br";
-
-export const revalidate = 3600;
+/**
+ * TCGdex proxy used by the client explorer.
+ *   /api/tcg?q=&serie=&set=&category=&rarity=&type=&illustrator=&stage=&hpMin=&hpMax=&sort=&page=&images=
+ *   /api/tcg?id=sv03.5-199            → full card
+ *   /api/tcg?ids=a,b,c                → several full cards (max 60)
+ *   /api/tcg?resource=meta | sets     → filter options / catalog
+ */
+const CACHE = { "Cache-Control": "public, s-maxage=3600, stale-while-revalidate=86400" };
 
 export async function GET(request: NextRequest) {
   const params = request.nextUrl.searchParams;
-  const id = params.get("id");
-  const resource = params.get("resource") ?? "cards";
-
   try {
+    const resource = params.get("resource");
+    if (resource === "meta") return NextResponse.json(await getMeta(), { headers: CACHE });
     if (resource === "sets") {
-      const response = await fetch(`${API}/sets`, { next: { revalidate: 86400 } });
-      if (!response.ok) throw new Error("Falha ao consultar coleções");
-      return NextResponse.json(await response.json());
+      const meta = await getMeta();
+      return NextResponse.json(meta.series.flatMap((s) => s.sets), { headers: CACHE });
     }
 
+    const id = params.get("id");
     if (id) {
-      const response = await fetch(`${API}/cards/${encodeURIComponent(id)}`, { next: { revalidate: 86400 } });
-      if (!response.ok) return NextResponse.json({ error: "Carta não encontrada" }, { status: response.status });
-      return NextResponse.json(await response.json());
+      const card = await getCard(id);
+      if (!card) return NextResponse.json({ error: "Carta não encontrada" }, { status: 404 });
+      return NextResponse.json(card, { headers: CACHE });
     }
 
-    const query = new URLSearchParams();
-    const search = params.get("q")?.trim();
-    const set = params.get("set");
-    const category = params.get("category");
-    const page = Math.max(1, Number(params.get("page") ?? "1") || 1);
+    const ids = params.get("ids");
+    if (ids !== null) {
+      const list = ids.split(",").map((s) => s.trim()).filter(Boolean).slice(0, 60);
+      return NextResponse.json(await getCardsByIds(list), { headers: CACHE });
+    }
 
-    if (search) query.set("name", search);
-    if (set) query.set("set.id", `eq:${set}`);
-    if (category && category !== "all") query.set("category", `eq:${category}`);
-    query.set("pagination:page", String(page));
-    query.set("pagination:itemsPerPage", "60");
-
-    const response = await fetch(`${API}/cards?${query.toString()}`, { next: { revalidate: 3600 } });
-    if (!response.ok) throw new Error("Falha ao consultar cartas");
-    return NextResponse.json(await response.json());
+    const size = Number(params.get("pageSize"));
+    const pageSize = Number.isFinite(size) && size >= 6 && size <= 60 ? Math.round(size) : undefined;
+    return NextResponse.json(await searchCards(parseTcgFilters(params), pageSize), { headers: CACHE });
   } catch (error) {
+    console.error("[api/tcg]", error);
     return NextResponse.json(
-      { error: error instanceof Error ? error.message : "Erro ao carregar cartas" },
+      { error: "A base de cartas (TCGdex) não respondeu. Tente novamente em instantes." },
       { status: 502 },
     );
   }
