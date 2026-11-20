@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion } from "motion/react";
-import { Compass, Grid3x3, Heart, Layers, Scale, Search, Sparkles } from "lucide-react";
+import { BookOpen, Compass, Grid3x3, Heart, Layers, Scale, Search, Sparkles } from "lucide-react";
 import { collection, useCollection } from "@/hooks/useCollection";
 import { useSearchPalette } from "./SearchPalette";
 import { Logo } from "./Logo";
@@ -11,6 +11,7 @@ import { Logo } from "./Logo";
 export const NAV = [
   { href: "/", label: "Explore", icon: Compass },
   { href: "/pokedex", label: "Pokédex", icon: Grid3x3 },
+  { href: "/cards", label: "Cartas TCG", icon: BookOpen },
   { href: "/teams", label: "My Decks", icon: Layers },
   { href: "/favorites", label: "Favoritos", icon: Heart },
   { href: "/compare", label: "Comparar", icon: Scale },
