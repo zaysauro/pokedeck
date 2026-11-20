@@ -24,10 +24,17 @@ async function get<T>(path: string, revalidate = 6 * HOUR): Promise<T> {
   const hit = inflight.get(url);
   if (hit && Date.now() - hit.at < 30_000) return hit.p as Promise<T>;
   const p = (async () => {
-    const res = await fetch(url, { next: { revalidate, tags: ["tcgdex"] } });
-    if (res.status === 404) throw new TcgNotFound(path);
-    if (!res.ok) throw new Error(`TCGdex ${res.status} em ${path}`);
-    return (await res.json()) as T;
+    for (let attempt = 0; ; attempt++) {
+      try {
+        const res = await fetch(url, { next: { revalidate, tags: ["tcgdex"] } });
+        if (res.status === 404) throw new TcgNotFound(path);
+        if (!res.ok) throw new Error(`TCGdex ${res.status} em ${path}`);
+        return (await res.json()) as T;
+      } catch (e) {
+        if (e instanceof TcgNotFound || attempt >= 1) throw e;
+        await new Promise((r) => setTimeout(r, 400));
+      }
+    }
   })();
   inflight.set(url, { at: Date.now(), p });
   p.catch(() => inflight.delete(url));
@@ -66,7 +73,10 @@ export async function getCatalog(): Promise<TcgSerieInfo[]> {
 }
 
 async function setIndex() {
-  const catalog = await getCatalog();
+  const catalog = await getCatalog().catch((e) => {
+    console.error("[tcgdex] catálogo indisponível", e);
+    return [] as TcgSerieInfo[];
+  });
   const map = new Map<string, TcgSetInfo>();
   catalog.forEach((s) => s.sets.forEach((set) => map.set(set.id, set)));
   return map;
@@ -215,7 +225,7 @@ export async function getSet(id: string): Promise<TcgSetDetail | null> {
 
 /** Most recent sets (for the landing page). */
 export async function getRecentSets(limit = 8): Promise<TcgSetInfo[]> {
-  const catalog = await getCatalog();
+  const catalog = await getCatalog().catch(() => [] as TcgSerieInfo[]);
   return catalog
     .flatMap((s) => s.sets)
     .filter((s) => s.logo && (s.official ?? 0) > 20)
