@@ -11,12 +11,15 @@ export function Footer() {
             Uma Pokédex colecionável e um construtor de decks. Dados de{" "}
             <a className="underline decoration-white/20 underline-offset-4 hover:text-white" href="https://pokeapi.co" target="_blank" rel="noreferrer">PokéAPI</a>{" "}
             e imagens de{" "}
-            <a className="underline decoration-white/20 underline-offset-4 hover:text-white" href="https://github.com/PokeAPI/sprites" target="_blank" rel="noreferrer">PokeAPI/sprites</a>.
+            <a className="underline decoration-white/20 underline-offset-4 hover:text-white" href="https://github.com/PokeAPI/sprites" target="_blank" rel="noreferrer">PokeAPI/sprites</a>;
+            cartas TCG de{" "}
+            <a className="underline decoration-white/20 underline-offset-4 hover:text-white" href="https://tcgdex.dev" target="_blank" rel="noreferrer">TCGdex</a>.
           </p>
         </div>
         <div className="flex flex-col gap-2 text-sm text-white/55">
           <span className="eyebrow mb-2">Navegar</span>
           <Link href="/pokedex" className="hover:text-white">Pokédex</Link>
+          <Link href="/cards" className="hover:text-white">Cartas TCG</Link>
           <Link href="/teams" className="hover:text-white">My Decks</Link>
           <Link href="/favorites" className="hover:text-white">Favoritos</Link>
           <Link href="/compare" className="hover:text-white">Comparar</Link>

@@ -9,12 +9,12 @@ import { useSearchPalette } from "./SearchPalette";
 import { Logo } from "./Logo";
 
 export const NAV = [
-  { href: "/", label: "Explore", icon: Compass },
-  { href: "/pokedex", label: "Pokédex", icon: Grid3x3 },
-  { href: "/cards", label: "Cartas TCG", icon: BookOpen },
-  { href: "/teams", label: "My Decks", icon: Layers },
-  { href: "/favorites", label: "Favoritos", icon: Heart },
-  { href: "/compare", label: "Comparar", icon: Scale },
+  { href: "/", label: "Explore", short: "Explore", icon: Compass },
+  { href: "/pokedex", label: "Pokédex", short: "Pokédex", icon: Grid3x3 },
+  { href: "/cards", label: "Cartas TCG", short: "Cartas", icon: BookOpen },
+  { href: "/teams", label: "My Decks", short: "Decks", icon: Layers },
+  { href: "/favorites", label: "Favoritos", short: "Favoritos", icon: Heart },
+  { href: "/compare", label: "Comparar", short: "Comparar", icon: Scale },
 ];
 
 export function Header() {
@@ -56,7 +56,7 @@ export function Header() {
               <button
                 type="button"
                 onClick={openSearch}
-                className="flex h-9 items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-3 text-[13px] text-white/60 transition hover:border-white/25 hover:text-white md:w-64"
+                className="flex h-9 items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-3 text-[13px] text-white/60 transition hover:border-white/25 hover:text-white md:w-64 lg:w-44 xl:w-64"
               >
                 <Search size={15} />
                 <span className="hidden md:inline">Buscar Pokémon…</span>
@@ -77,14 +77,14 @@ export function Header() {
       </header>
 
       {/* Mobile tab bar */}
-      <nav aria-label="Principal (mobile)" className="fixed inset-x-3 bottom-3 z-50 flex justify-around rounded-2xl border border-white/10 bg-ink/85 py-1.5 backdrop-blur-xl lg:hidden">
+      <nav aria-label="Principal (mobile)" className="fixed inset-x-3 bottom-3 z-50 flex justify-around gap-0.5 rounded-2xl px-1 border border-white/10 bg-ink/85 py-1.5 backdrop-blur-xl lg:hidden">
         {NAV.map((n) => {
           const Icon = n.icon;
           const active = isActive(n.href);
           return (
-            <Link key={n.href} href={n.href} className={`relative flex flex-col items-center gap-0.5 px-2 py-1 text-[10px] ${active ? "text-white" : "text-white/45"}`}>
+            <Link key={n.href} href={n.href} aria-label={n.label} className={`relative flex min-w-0 flex-1 flex-col items-center gap-0.5 px-0.5 py-1 text-[10px] ${active ? "text-white" : "text-white/45"}`}>
               <Icon size={18} />
-              {n.label}
+              <span className="max-w-full truncate">{n.short}</span>
               {active && <motion.span layoutId="tab-dot" className="absolute -bottom-0.5 h-0.5 w-5 rounded-full bg-[var(--accent)]" />}
             </Link>
           );

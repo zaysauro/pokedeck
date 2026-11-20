@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
 import { useRouter } from "next/navigation";
 import { AnimatePresence, motion } from "motion/react";
-import { ArrowRight, CornerDownLeft, Search } from "lucide-react";
+import { ArrowRight, BookOpen, CornerDownLeft, Search } from "lucide-react";
 import { searchEntries, usePokedex } from "@/hooks/usePokedex";
 import { dexNumber } from "@/lib/format";
 import { PokeImage } from "@/components/ui/PokeImage";
@@ -135,6 +135,18 @@ export function SearchPalette() {
                     className={`mt-1 flex w-full items-center justify-between rounded-xl px-3 py-2.5 text-sm text-white/60 hover:bg-white/[0.05] ${active === results.length ? "bg-white/[0.07]" : ""}`}
                   >
                     Ver todos os resultados <ArrowRight size={14} />
+                  </button>
+                </li>
+              )}
+              {q.trim() && (
+                <li>
+                  <button
+                    type="button"
+                    onClick={() => go(`/cards?q=${encodeURIComponent(q.trim())}#explorar`)}
+                    className="flex w-full items-center justify-between rounded-xl px-3 py-2.5 text-sm text-white/60 hover:bg-white/[0.05]"
+                  >
+                    <span className="flex items-center gap-2"><BookOpen size={14} className="text-gold" /> Buscar “{q.trim()}” nas Cartas TCG</span>
+                    <ArrowRight size={14} />
                   </button>
                 </li>
               )}
