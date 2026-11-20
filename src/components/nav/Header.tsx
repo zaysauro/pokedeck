@@ -3,16 +3,18 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion } from "motion/react";
-import { BookOpen, Compass, Grid3x3, Heart, Layers, Scale, Search, Sparkles } from "lucide-react";
+import { BookOpen, Compass, Grid3x3, Heart, Layers, Scale, Search, Sparkles, Users } from "lucide-react";
 import { collection, useCollection } from "@/hooks/useCollection";
 import { useSearchPalette } from "./SearchPalette";
 import { Logo } from "./Logo";
+import { AccountMenu } from "@/components/social/AccountMenu";
 
 export const NAV = [
   { href: "/", label: "Explore", short: "Explore", icon: Compass },
   { href: "/pokedex", label: "Pokédex", short: "Pokédex", icon: Grid3x3 },
   { href: "/cards", label: "Cartas TCG", short: "Cartas", icon: BookOpen },
   { href: "/teams", label: "My Decks", short: "Decks", icon: Layers },
+  { href: "/comunidade", label: "Comunidade", short: "Social", icon: Users },
   { href: "/favorites", label: "Favoritos", short: "Favoritos", icon: Heart },
   { href: "/compare", label: "Comparar", short: "Comparar", icon: Scale },
 ];
@@ -34,12 +36,12 @@ export function Header() {
             <Link href="/" aria-label="PokéDeck — início" className="shrink-0">
               <Logo />
             </Link>
-            <nav className="hidden items-center gap-1 lg:flex" aria-label="Principal">
+            <nav className="hidden items-center gap-0.5 lg:flex xl:gap-1" aria-label="Principal">
               {NAV.map((n) => (
                 <Link
                   key={n.href}
                   href={n.href}
-                  className={`relative rounded-full px-3.5 py-1.5 text-[13px] transition-colors ${isActive(n.href) ? "text-white" : "text-white/55 hover:text-white"}`}
+                  className={`relative rounded-full px-2.5 py-1.5 text-[13px] transition-colors xl:px-3.5 ${isActive(n.href) ? "text-white" : "text-white/55 hover:text-white"}`}
                 >
                   {isActive(n.href) && (
                     <motion.span layoutId="nav-pill" className="absolute inset-0 rounded-full bg-white/10" transition={{ type: "spring", stiffness: 400, damping: 34 }} />
@@ -72,6 +74,7 @@ export function Header() {
               >
                 <Sparkles size={15} />
               </button>
+              <AccountMenu />
             </div>
           </div>
         </div>
@@ -83,7 +86,7 @@ export function Header() {
           const Icon = n.icon;
           const active = isActive(n.href);
           return (
-            <Link key={n.href} href={n.href} aria-label={n.label} className={`relative flex min-w-0 flex-1 flex-col items-center gap-0.5 px-0.5 py-1 text-[10px] ${active ? "text-white" : "text-white/45"}`}>
+            <Link key={n.href} href={n.href} aria-label={n.label} className={`relative flex min-w-0 flex-1 flex-col items-center gap-0.5 px-0 py-1 text-[9px] tracking-tight ${active ? "text-white" : "text-white/45"}`}>
               <Icon size={18} />
               <span className="max-w-full truncate">{n.short}</span>
               {active && <motion.span layoutId="tab-dot" className="absolute -bottom-0.5 h-0.5 w-5 rounded-full bg-[var(--accent)]" />}
