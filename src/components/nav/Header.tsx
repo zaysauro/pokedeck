@@ -56,11 +56,12 @@ export function Header() {
               <button
                 type="button"
                 onClick={openSearch}
-                className="flex h-9 items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-3 text-[13px] text-white/60 transition hover:border-white/25 hover:text-white md:w-64 lg:w-44 xl:w-64"
+                aria-label="Buscar Pokémon"
+                className="flex h-9 items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-3 text-[13px] text-white/60 transition hover:border-white/25 hover:text-white md:w-64 lg:w-auto xl:w-64"
               >
                 <Search size={15} />
-                <span className="hidden md:inline">Buscar Pokémon…</span>
-                <kbd className="ml-auto hidden rounded border border-white/15 px-1.5 font-mono text-[10px] text-white/40 md:inline">⌘K</kbd>
+                <span className="hidden whitespace-nowrap md:inline lg:hidden xl:inline">Buscar Pokémon…</span>
+                <kbd className="ml-auto hidden rounded border border-white/15 px-1.5 font-mono text-[10px] text-white/40 md:inline lg:hidden xl:inline">⌘K</kbd>
               </button>
               <button
                 type="button"
